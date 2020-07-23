@@ -23,7 +23,7 @@ def change_distance(graph,distance,path,point,address,index):
 
 def shortest_path(src,dst):
     global n
-    graph = component.readthefile("/root/mysite/qiyou/graph_calculate_view")   #读graph文件
+    graph = component.readthefile("/root/mysite/qiyou/graph")   #读graph文件
     for i in range(0, n):
         for j in range(0, n):
             graph[i][j] = float(graph[i][j])
@@ -61,38 +61,17 @@ def shortest_path(src,dst):
                 break
             change_distance(graph, distance, path, point, address,index)
             pointx = point
-    if distance[dst] == np.inf:         #如果未找到路径，扩大范围
-        component.calculate_searchneed(unsearch, address, src, dst, 40, 20)
-        pointx = np.inf
-        while True:
-            point = component.calculate_priority(unsearch, distance, dst)
-            if point == pointx:
-                break
-            change_distance(graph, distance, path, point, address,index)
-            pointx = point
-    # if distance[dst] == np.inf:
-    #     graph = component.readthefile("D:/大三下/专业实习二/graph_250")  # 读graph_250文件
-    #     for i in range(0, n):
-    #         for j in range(0, n):
-    #             graph[i][j] = float(graph[i][j])
-    #     component.calculate_searchneed(unsearch, address, src, dst, 6, 4)
-    #     pointx = np.inf
-    #     while True:
-    #         point = component.calculate_priority(unsearch, distance, dst)
-    #         if point == pointx:
-    #             break
-    #         change_distance(graph, distance, path, point, address)
-    #         pointx = point
     if distance[dst] != np.inf:
-        date = component.generate_date(path[dst],index[dst])
+        date = component.generate_date(path[dst],index[dst])[0]
+        x=component.generate_date(path[dst],index[dst])[1]
+
     else:
         date="不建议骑行到该地区"
-    
     
     #print("总距离为：",distance[dst],"km")
     #print("路径为：",path[dst])
     #print(date)
-    return (distance[dst],path[dst],date)
+    return (distance[dst],path[dst],date,x)
     
     #print("总距离为：",distance[dst],"km")
     #print("路径为：",path[dst])

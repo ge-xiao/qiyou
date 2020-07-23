@@ -6,10 +6,7 @@ table = data.sheet_by_index(0)
 n = table.nrows
 def calculate_difference(a,b,c,d,chy): #计算y=（（a-b）/（c-d））x+c
     e = a - b
-    if c > d:
-        f = c - d
-    else:
-        f = d - c
+    f = c - d
     g = f / e
     h = (chy - a) * g + c
     return h
@@ -21,7 +18,7 @@ def calculate_searchneed(unsearch,address,src,dst,x,y):   #通过经纬度是否
     src_lng = address[src][1]
     src_lat = address[src][2]
     dst_lng = address[dst][1]
-    dst_lat = address[dst][2]
+    dst_lat = address[dst][2] 
     if src_lng > dst_lng:
         test_lng = src_lng - dst_lng
     else:
@@ -63,6 +60,8 @@ def calculate_searchneed(unsearch,address,src,dst,x,y):   #通过经纬度是否
                         dif = calculate_difference(dst_lng,src_lng,dst_lat,src_lat,address[i][1])
                         if dif-x < address[i][2] < dif+x:
                             unsearch[i] = -1
+
+'''                            
 def calculate_priority(unsearch,distance,dst):          #计算搜索优先级，与src距离越小优先级越高
     global n
     point = 0
@@ -77,6 +76,26 @@ def calculate_priority(unsearch,distance,dst):          #计算搜索优先级�
                         p = distance[i]
     unsearch[point] = 0
     return point
+'''
+
+def calculate_priority(unsearch,distance,dst):          #计算搜索优先级，与src距离越小优先级越高
+    global n
+    point = 0
+    p = np.inf
+    for i in range(0,n):
+        if unsearch[i] != 0:
+                if distance[i] < np.inf:
+                    if distance[i] > distance[dst]:
+                        unsearch[i] = 0
+                    else:
+                        if distance[i] < p:
+                            point = i
+                            p = distance[i]
+    unsearch[point] = 0
+    return point
+
+
+
 def readthefile(location):             #读文件，location为文件路径，zzcq为读出内容
     file = open(location, mode='r')
     zzcq = []
@@ -121,14 +140,13 @@ def generate_date(pathall,indexall):
         i = n-1
         if index[i] <= 100:
             date = date + "第" + str(x) + "天:" + path[i] + "--->" + path[i + 1] + " 距离为：" + str(index[i])+"km" + "\n"
-            x = x + 1
         if index[i] > 100:
             dex = math.ceil(index[i] / 100)
             for j in range(dex - 1):
                 date = date + "第" + str(x) + "天:" + path[i] + "--->" + path[i + 1] + " 距离为：" + str(100)+"km" + "\n"
                 x = x + 1
             date = date + "第" + str(x) + "天:" + path[i] + "--->" + path[i + 1] + " 距离为：" + str(round(index[i] % 100,2))+"km" + "\n"
-    return date
+    return (date,x)
 
 
 

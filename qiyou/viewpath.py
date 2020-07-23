@@ -22,7 +22,7 @@ def change_distance(graph,distance,path,point,address,graph_calculate,distance_c
                 path[i] = path[point]+"-"+address[i][0]
                 index[i] = str(index[point]) + "-" + str(graph_calculate[i][point])
 
-def shortest_path(src,dst):
+def view_path(src,dst):
     global n
     graph_calculate = component.readthefile("/root/mysite/qiyou/graph_calculate_view") #读文件
     for i in range(0, n):
@@ -46,6 +46,7 @@ def shortest_path(src,dst):
     unsearch = [0 for i in range(n)]         #定义unsearch存储需要搜索得点（0不需要，-1需要）
     component.calculate_searchneed(unsearch,address,src,dst,3,4)    #计算需要搜索的点
     unsearch[src] = 0
+    count = 0
     for i in range(0,n):                #初始化distance
         distance[i] = graph[src][i]
         distance_calculate[i] = graph_calculate[src][i]
@@ -67,21 +68,16 @@ def shortest_path(src,dst):
             if point == pointx:
                 break
             change_distance(graph, distance, path, point, address, graph_calculate, distance_calculate,index)
-            pointx = point
-    if distance[dst] == np.inf:
-        component.calculate_searchneed(unsearch, address, src, dst, 40, 20)
-        pointx = np.inf
-        while True:
-            point = component.calculate_priority(unsearch, distance, dst)
-            if point == pointx:
-                break
-            change_distance(graph, distance, path, point, address, graph_calculate, distance_calculate,index)
-            pointx = point
-    if distance_calculate[dst] != np.inf:
-        date = component.generate_date(path[dst],index[dst])
+            pointx = point      
+    if distance[dst] != np.inf:
+        date = component.generate_date(path[dst],index[dst])[0]
+        print("总距离为：",distance[dst],"km")
+        print("路径为：",path[dst])
+        print(date)
+        x=component.generate_date(path[dst],index[dst])[1]
     else:
         date="不建议骑行到该地区"
-    #print("总距离为：",distance_calculate[dst],"km")
-    #print("路径为：",path[dst])
-    #print(date)
-    return (distance_calculate[dst],path[dst],date)
+    print("总距离为：",distance[dst],"km")
+    print("路径为：",path[dst])
+    print(date)
+    return (distance[dst],path[dst],date,x)

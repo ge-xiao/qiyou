@@ -60,4 +60,5 @@ def generate_graph_view(x,y):      #生成graph，graph_calculate,address,x为�
                                     graph_view[i][j] = dist_view
             else:
                 graph[i][j] = 0
+                graph_view[i][j] = 0
     return (graph,graph_view,address)

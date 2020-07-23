@@ -52,7 +52,7 @@ def index(request):
         client_path_str=result['user_data']
         client_path=client_path_str.split("-")
         #print(client_path)
-        (distance,server_path,date)=viewpath.shortest_path(client_path[0],client_path[1])
+        (distance,server_path,date,x)=viewpath.view_path(client_path[0],client_path[1])
 
 
         print (distance)
@@ -62,12 +62,15 @@ def index(request):
         if server_path ==' ':
             return HttpResponse("不建议骑行")
         else:
-            graphicsGenerator=GraphicsGenerator('view')
-            graphicsGenerator.create_graphics(server_path)
-            if data.objects.filter(user_name=user_info['name']).filter(user_path=client_path_str).filter(category='view').count() ==0:
+            if distance !=0:
+                graphicsGenerator=GraphicsGenerator('view')
+                graphicsGenerator.create_graphics(server_path)
+                if data.objects.filter(user_name=user_info['name']).filter(user_path=client_path_str).filter(category='view').count() ==0:
 
-                data.objects.get_or_create(user_name=user_info['name'],user_path=client_path_str,category='view',user_route=date,user_save='n')
-            return HttpResponse('总路程:'+'{:.2f}'.format(distance)+'km'+'\n'+client_path[0]+'-'+client_path[1]+'\n'+date)
+                    data.objects.get_or_create(user_name=user_info['name'],user_path=client_path_str,category='view',user_route=date,user_save='n')
+                return HttpResponse('总路程:'+'{:.2f}'.format(distance)+'km'+'\n'+'总天数:'+str(x)+'\n'+client_path[0]+'-'+client_path[1]+'\n'+date)
+            else:
+                return HttpResponse('建议删除此软件')
 
 
         #print(dis_part)
@@ -135,7 +138,7 @@ def index(request):
         client_path_str=result['user_data']
         client_path=client_path_str.split("-")
         #print(client_path)
-        (distance,server_path,date)=shortpath.shortest_path(client_path[0],client_path[1])
+        (distance,server_path,date,x)=shortpath.shortest_path(client_path[0],client_path[1])
         
 
         print (distance)
@@ -145,12 +148,15 @@ def index(request):
         if server_path ==" ":
             return HttpResponse("不建议骑行")
         else:
-            graphicsGenerator=GraphicsGenerator('short')
-            graphicsGenerator.create_graphics(server_path)
-            if data.objects.filter(user_name=user_info['name']).filter(user_path=client_path_str).filter(category='short').count() ==0:
+            if distance !=0:
+                graphicsGenerator=GraphicsGenerator('short')
+                graphicsGenerator.create_graphics(server_path)
+                if data.objects.filter(user_name=user_info['name']).filter(user_path=client_path_str).filter(category='short').count() ==0:
 
-                data.objects.get_or_create(user_name=user_info['name'],user_path=client_path_str,category='short',user_route=date,user_save='n')
-            return HttpResponse('总路程:'+'{:.2f}'.format(distance)+'km'+'\n'+client_path[0]+'-'+client_path[1]+'\n'+date)
+                    data.objects.get_or_create(user_name=user_info['name'],user_path=client_path_str,category='short',user_route=date,user_save='n')
+                return HttpResponse('总路程:'+'{:.2f}'.format(distance)+'km'+'\n'+'总天数:'+str(x)+'\n'+client_path[0]+'-'+client_path[1]+'\n'+date)
+            else:
+                return HttpResponse('建议删除此软件')
 
 
 
