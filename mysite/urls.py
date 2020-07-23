@@ -16,9 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from qiyou import views as calc_views
+from django.views.static import serve
+from django.contrib import admin
+from django import urls
+from django.conf.urls import url
 
 urlpatterns = [
-    path('', calc_views.index, name='home'),
+    path('', calc_views.index, name='index'),
+    path('view/',calc_views.view_path,name='view_path'),
+    path('short/',calc_views.short_path,name='short_path'),
+
     path('admin/', admin.site.urls),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root':'/root/mysite/qiyou/image/'})
     
 ]
