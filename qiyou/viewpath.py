@@ -69,15 +69,15 @@ def view_path(src,dst):
                 break
             change_distance(graph, distance, path, point, address, graph_calculate, distance_calculate,index)
             pointx = point      
-    if distance[dst] != np.inf:
+    if distance_calculate[dst] != np.inf:
         date = component.generate_date(path[dst],index[dst])[0]
-        print("总距离为：",distance[dst],"km")
-        print("路径为：",path[dst])
-        print(date)
+        #print("总距离为：",distance[dst],"km")
+        #print("路径为：",path[dst])
+        #print(date)
         x=component.generate_date(path[dst],index[dst])[1]
     else:
         date="不建议骑行到该地区"
-    print("总距离为：",distance[dst],"km")
-    print("路径为：",path[dst])
-    print(date)
-    return (distance[dst],path[dst],date,x)
+    #print("总距离为：",distance[dst],"km")
+    #print("路径为：",path[dst])
+    #print(date)
+    return (distance_calculate[dst],path[dst],date,x)
